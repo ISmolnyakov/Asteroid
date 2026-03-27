@@ -1,4 +1,5 @@
 import pygame
+import sys
 from constants import (
     PLAYER_RADIUS, 
     LINE_WIDTH, 
@@ -10,6 +11,7 @@ from constants import (
     )
 from circleshape import CircleShape
 from shot import Shot
+from logger import log_event
 
 class Player(CircleShape):
     def __init__(self, x,y): 
@@ -45,6 +47,17 @@ class Player(CircleShape):
             self.rotate(dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        if keys[pygame.K_p]:
+            log_event("game_paused")
+            paused = True
+            while paused:
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_o:
+                        paused = False
+                        log_event("game_unpaused")
+        if keys[pygame.K_q]:
+            log_event("Game quite")
+            sys.exit()
 
         self.cd -= dt
 
